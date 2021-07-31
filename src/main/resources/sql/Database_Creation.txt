@@ -1,0 +1,113 @@
+***************** Oracle DB & Tables Creation *******************
+------- User Creation in Oracle --------
+--Create a user with name 'airtel' using "Run SQL command Line"
+Connect to main user using 
+user: system 
+password: system
+
+CREATE USER airtel IDENTIFIED BY airtel;
+GRANT CONNECT, RESOURCE, DBA TO airtel;
+GRANT UNLIMITED TABLESPACE TO airtel;
+
+
+------- Tables Creation in Oracle --------
+Connect to user 'airtel' using "Run SQL command Line"
+ and create the tables;
+ 
+DROP TABLE PLAN;
+DROP TABLE CUSTOMER;
+ 
+---- Plan table Creation ----
+ 
+ CREATE TABLE PLAN(
+	PLAN_ID NUMBER(20) NOT NULL,
+	PLAN_NAME VARCHAR2(255),
+	AMOUNT NUMBER(10),
+	BALANCE NUMBER(10),
+	DATA NUMBER(10),
+	VALIDITY NUMBER(10),
+	CONSTRAINT PLAN_PK PRIMARY KEY (PLAN_ID)
+);
+
+-- Create plan sequence
+CREATE SEQUENCE PlAN_SEQUENCE START WITH 1;
+
+-- Create Trigger for plan id auto insert:
+CREATE OR REPLACE TRIGGER PLAN_BEFORE_INSERT  
+	BEFORE INSERT ON PLAN 
+	FOR EACH ROW
+
+	BEGIN
+  		SELECT PlAN_SEQUENCE.NEXTVAL
+  		INTO   :new.PLAN_ID
+  		FROM   dual;
+	END;
+	/
+
+---- Customer table Creation ----
+CREATE TABLE CUSTOMER(
+	PHONE_NUMBER VARCHAR2(20) NOT NULL,
+	CUSTOMER_NAME VARCHAR2(255) NOT NULL,
+	AGE NUMBER(10),
+	GENDER VARCHAR2(20),
+	ADDRESS VARCHAR2(255),
+	PLAN_ID NUMBER(20),
+	CONSTRAINT CUSTOMER_PK PRIMARY KEY (PHONE_NUMBER),
+	CONSTRAINT PLAN_FK FOREIGN KEY (PLAN_ID) REFERENCES PLAN(PLAN_ID)
+);
+
+
+***************** MYSQL DB & Tables Creation *******************
+
+------- User Creation in MySql --------
+--Create a user with name 'airtel' using mysql command prompt
+
+CREATE USER 'airtel' IDENTIFIED BY 'airtel';
+
+--- Grant the permissions
+
+GRANT ALL PRIVILEGES ON EMPLOYEE_DATABASE.* TO 'airtel'@'localhost';
+	
+--If you failed to grant on localhost, you have to create the user like this
+	
+CREATE USER 'airtel'@'localhost' IDENTIFIED WITH mysql_native_password BY 'airtel';
+GRANT ALL PRIVILEGES ON EMPLOYEE_DATABASE.* airtel'@'localhost';
+
+
+------- Connect to the user using command prompt ------- 
+
+mysql -u airtel -p
+airtel
+	
+------- Database Creation in MySql --------
+
+CREATE DATABASE  IF NOT EXISTS AIRTEL_DATABASE;
+USE AIRTEL_DATABASE;
+
+------- Tables Creation in MySql --------
+DROP TABLE IF EXISTS PLAN;
+DROP TABLE IF EXISTS CUSTOMER;
+
+CREATE TABLE PLAN(
+	PLAN_ID INT NOT NULL AUTO_INCREMENT,
+	PLAN_NAME VARCHAR(255),
+	AMOUNT INT,
+	BALANCE INT,
+	DATA INT,
+	VALIDITY INT,
+	PRIMARY KEY (PLAN_ID)
+);
+
+CREATE TABLE CUSTOMER(
+	PHONE_NUMBER VARCHAR(20) NOT NULL,
+	CUSTOMER_NAME VARCHAR(255) NOT NULL,
+	AGE INT,
+	GENDER VARCHAR(20),
+	ADDRESS VARCHAR(255),
+	PLAN_ID INT,
+	PRIMARY KEY (PHONE_NUMBER),
+	CONSTRAINT PLAN_FK FOREIGN KEY (PLAN) REFERENCES PLAN(PLAN_ID)
+);
+
+
+ 

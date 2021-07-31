@@ -1,0 +1,23 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true" diskPersistent="true">
+
+	<diskStore path="java.io.tmpdir" />
+	<!-- <diskStore path="user.dir" /> -->
+
+	<cache name="customer" maxEntriesLocalHeap="100"
+		maxEntriesLocalDisk="50" eternal="false" diskSpoolBufferSizeMB="20"
+		timeToIdleSeconds="3000" timeToLiveSeconds="6000"
+		memoryStoreEvictionPolicy="LRU" transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+		<!-- <persistence strategy="LOCALRESTARTABLE" /> -->
+	</cache>
+
+	<cache name="plan" maxEntriesLocalHeap="100"
+		maxEntriesLocalDisk="50" eternal="false" diskSpoolBufferSizeMB="20"
+		timeToIdleSeconds="3000" timeToLiveSeconds="6000"
+		memoryStoreEvictionPolicy="LRU" transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+	</cache>
+
+</ehcache>
